@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,15 +30,12 @@ import com.google.firebase.auth.FirebaseAuth;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener{
+public class MainFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    Toolbar toolbar;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -74,15 +72,6 @@ public class MainFragment extends Fragment implements NavigationView.OnNavigatio
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        OnBackPressedCallback callback= new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                }
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
 
     }
 
@@ -93,9 +82,7 @@ public class MainFragment extends Fragment implements NavigationView.OnNavigatio
 
 
         final View view= inflater.inflate(R.layout.fragment_main, container, false);
-        drawerLayout=view.findViewById(R.id.drawer_layout);
-        navigationView=view.findViewById(R.id.nav_view);
-        FloatingActionButton actionButton= (FloatingActionButton)view.findViewById(R.id.actionButton);
+        FloatingActionButton actionButton= view.findViewById(R.id.actionButton);
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,9 +95,7 @@ public class MainFragment extends Fragment implements NavigationView.OnNavigatio
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this.getActivity(),drawerLayout,R.string.nav_drawer_open,R.string.nav_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+
     }
 
     @Override
@@ -118,17 +103,7 @@ public class MainFragment extends Fragment implements NavigationView.OnNavigatio
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.nav_logout:
-                FirebaseAuth mAuth=FirebaseAuth.getInstance();
-                mAuth.signOut();
-                Intent signInIntent=new Intent(this.getActivity().getApplicationContext(),LoginActivity.class);
-                startActivity(signInIntent);
-                break;
-        }
-        return true;
-    }
+
+
 
 }

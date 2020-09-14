@@ -1,12 +1,27 @@
 package com.mpip.kuuk;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.mpip.kuuk.adapter.IngredientListAdapter;
+import com.mpip.kuuk.dto.IngredientDto;
+import com.mpip.kuuk.viewholder.ingredientViewHolder;
+import com.mpip.kuuk.viewmodel.IngredientsViewModel;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +34,8 @@ public class IngredientsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private IngredientsViewModel ingredientsViewModel;
+    private IngredientListAdapter adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -53,12 +70,44 @@ public class IngredientsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_ingredients, container, false);
+    }
+
+    private View.OnClickListener getItemViewOnClickListener() {
+        return new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                ingredientViewHolder holder = (ingredientViewHolder)v.getTag();
+                Long selectedIngID= adapter.getClickedItemId(holder);
+            };
+        };
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final Context c = this.getContext();
+        RecyclerView recyclerView=getView().findViewById(R.id.recycler_ing);
+        recyclerView.setLayoutManager(new GridLayoutManager(c,3));
+        adapter = new IngredientListAdapter(getItemViewOnClickListener());
+        recyclerView.setAdapter(adapter);
+        ingredientsViewModel = new ViewModelProvider(this).get(IngredientsViewModel.class);
+
+        ingredientsViewModel.getIngredients().observe(getViewLifecycleOwner(), new Observer<List<IngredientDto>>() {
+            @Override
+            public void onChanged(List<IngredientDto> ingredientDtos) {
+                adapter.updateDataset(ingredientDtos);
+            }
+        });
+
     }
 }
