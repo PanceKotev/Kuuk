@@ -6,10 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.ViewModel;
 
-public class IngredientSharedViewModel extends AndroidViewModel {
+public class IngredientSharedViewModel extends ViewModel {
 
 
-    public IngredientSharedViewModel(@NonNull Application application) {
-        super(application);
-    }
 }

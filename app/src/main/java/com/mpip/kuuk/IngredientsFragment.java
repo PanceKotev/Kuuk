@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,11 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mpip.kuuk.adapter.IngredientListAdapter;
 import com.mpip.kuuk.dto.IngredientDto;
-import com.mpip.kuuk.viewholder.ingredientViewHolder;
 import com.mpip.kuuk.viewmodel.IngredientsViewModel;
+import com.mpip.kuuk.viewmodel.RecipeViewModel;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -36,6 +43,8 @@ public class IngredientsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private IngredientsViewModel ingredientsViewModel;
     private IngredientListAdapter adapter;
+    List<String> ingredientNames= new ArrayList<>();
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -86,8 +95,17 @@ public class IngredientsFragment extends Fragment {
         return new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                ingredientViewHolder holder = (ingredientViewHolder)v.getTag();
-                Long selectedIngID= adapter.getClickedItemId(holder);
+                IngredientListAdapter.ingredientViewHolder holder = (IngredientListAdapter.ingredientViewHolder)v.getTag();
+                String ingredientName=adapter.getClickedItemName(holder).toLowerCase();
+                if(!ingredientNames.contains(ingredientName)){
+
+                    ingredientNames.add(ingredientName);
+                    holder.setItemSelected(true);
+                }
+                else{
+                    ingredientNames.remove(ingredientName);
+                    holder.setItemSelected(false);
+                }
             };
         };
     }
@@ -98,14 +116,24 @@ public class IngredientsFragment extends Fragment {
         final Context c = this.getContext();
         RecyclerView recyclerView=getView().findViewById(R.id.recycler_ing);
         recyclerView.setLayoutManager(new GridLayoutManager(c,3));
-        adapter = new IngredientListAdapter(getItemViewOnClickListener());
+        adapter = new IngredientListAdapter();
         recyclerView.setAdapter(adapter);
+        adapter.setItemListener(getItemViewOnClickListener());
         ingredientsViewModel = new ViewModelProvider(this).get(IngredientsViewModel.class);
-
         ingredientsViewModel.getIngredients().observe(getViewLifecycleOwner(), new Observer<List<IngredientDto>>() {
             @Override
             public void onChanged(List<IngredientDto> ingredientDtos) {
                 adapter.updateDataset(ingredientDtos);
+            }
+        });
+
+        ExtendedFloatingActionButton floatingActionButton=getView().findViewById(R.id.showIngredients);
+        final RecipeViewModel recipeViewModel=new ViewModelProvider(requireActivity()).get(RecipeViewModel.class);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recipeViewModel.setIngredients(ingredientNames);
+                Navigation.findNavController(v).navigate(R.id.action_ingredientsFragment_to_mainFragment);
             }
         });
 

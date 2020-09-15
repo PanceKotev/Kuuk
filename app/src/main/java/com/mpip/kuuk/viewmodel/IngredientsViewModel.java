@@ -44,13 +44,7 @@ public class IngredientsViewModel extends ViewModel {
     List<IngredientDto> toIngredients(DataSnapshot snapshot){
         List<IngredientDto> transformed=new ArrayList<IngredientDto>();
         for (DataSnapshot ingredient:snapshot.getChildren()){
-            transformed.add(new IngredientDto(
-                    (long)ingredient.child("ingredientID").getValue(),
-                    (String)ingredient.child("imgUrl").getValue(),
-                    (String)ingredient.child("name").getValue(),
-                    (String)ingredient.child("region").getValue(),
-                    (String)ingredient.child("type").getValue()
-            ));
+            transformed.add(ingredient.getValue(IngredientDto.class));
         }
         return transformed;
     }

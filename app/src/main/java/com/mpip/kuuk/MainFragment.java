@@ -10,7 +10,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,11 +24,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mpip.kuuk.adapter.IngredientListAdapter;
+import com.mpip.kuuk.adapter.RecipeListAdapter;
+import com.mpip.kuuk.dto.IngredientDto;
+import com.mpip.kuuk.dto.RecipeDto;
+import com.mpip.kuuk.viewmodel.IngredientsViewModel;
+import com.mpip.kuuk.viewmodel.RecipeViewModel;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +53,8 @@ public class MainFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private RecipeViewModel recipeViewModel;
+    private RecipeListAdapter recipeListAdapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -90,6 +109,37 @@ public class MainFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        super.onViewCreated(view, savedInstanceState);
+        RecyclerView recyclerView=getView().findViewById(R.id.recycler_rec);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recipeListAdapter = new RecipeListAdapter();
+        recyclerView.setAdapter(recipeListAdapter);
+        recipeListAdapter.setItemListener(getItemViewOnClickListener());
+        recipeViewModel = new ViewModelProvider(requireActivity()).get(RecipeViewModel.class);
+        if(recipeViewModel.getSearcher()!=null){
+            Log.d("Searcher",recipeViewModel.getSearcher());
+
+        recipeViewModel.getRecipes().observe(getViewLifecycleOwner(), new Observer<List<RecipeDto>>() {
+            @Override
+            public void onChanged(List<RecipeDto> recipeDtos) {
+                recipeListAdapter.updateDataset(recipeDtos);
+            }
+        });}
+    }
+
+    private View.OnClickListener getItemViewOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecipeListAdapter.RecipeViewHolder holder = (RecipeListAdapter.RecipeViewHolder) v.getTag();
+                Toast.makeText(getContext(),recipeListAdapter.getClickedItemName(holder).getName(),Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     @Override
