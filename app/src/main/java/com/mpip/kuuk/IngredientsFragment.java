@@ -22,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mpip.kuuk.adapter.IngredientListAdapter;
 import com.mpip.kuuk.dto.IngredientDto;
 import com.mpip.kuuk.viewmodel.IngredientsViewModel;
+import com.mpip.kuuk.model.LoadingState;
 import com.mpip.kuuk.viewmodel.RecipeViewModel;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class IngredientsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private IngredientsViewModel ingredientsViewModel;
     private IngredientListAdapter adapter;
+    private View loading;
     List<String> ingredientNames= new ArrayList<>();
 
 
@@ -114,16 +116,32 @@ public class IngredientsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final Context c = this.getContext();
-        RecyclerView recyclerView=getView().findViewById(R.id.recycler_ing);
+        loading=getView().findViewById(R.id.loadingPanel);
+        final RecyclerView recyclerView=getView().findViewById(R.id.recycler_ing);
         recyclerView.setLayoutManager(new GridLayoutManager(c,3));
         adapter = new IngredientListAdapter();
         recyclerView.setAdapter(adapter);
         adapter.setItemListener(getItemViewOnClickListener());
+
         ingredientsViewModel = new ViewModelProvider(this).get(IngredientsViewModel.class);
+
         ingredientsViewModel.getIngredients().observe(getViewLifecycleOwner(), new Observer<List<IngredientDto>>() {
             @Override
             public void onChanged(List<IngredientDto> ingredientDtos) {
                 adapter.updateDataset(ingredientDtos);
+            }
+        });
+        ingredientsViewModel.getState().observe(getViewLifecycleOwner(), new Observer<LoadingState>() {
+            @Override
+            public void onChanged(LoadingState loadingState) {
+                if(loadingState==LoadingState.LOADING){
+                        loading.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                }
+                else{
+                    loading.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
             }
         });
 

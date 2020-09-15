@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         final UserInfo user = mAuth.getCurrentUser();
         Handler h = new Handler();
-
         final Context c = this.getApplicationContext();
         h.postDelayed(new Runnable() {
             @Override

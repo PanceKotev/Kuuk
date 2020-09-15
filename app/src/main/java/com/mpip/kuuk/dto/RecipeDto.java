@@ -14,8 +14,9 @@ public class RecipeDto  {
     private String ingredientNmbr;
     private String ingredientNames;
     private Map<String,String> steps;
+    private String category;
 
-    public RecipeDto(Long recipeId, int cookingTime, String cuisine, String imgUrl, String name, int servings, boolean vegan,String ingredientNames,String ingredientNmbr, Map<String,String> steps) {
+    public RecipeDto(Long recipeId, int cookingTime, String cuisine, String imgUrl, String name, int servings, boolean vegan,String ingredientNames,String ingredientNmbr, Map<String,String> steps,String category) {
         RecipeId = recipeId;
         this.cookingTime = cookingTime;
         this.cuisine = cuisine;
@@ -26,6 +27,7 @@ public class RecipeDto  {
         this.ingredientNames=ingredientNames;
         this.ingredientNmbr=ingredientNmbr;
         this.steps = steps;
+        this.category = category;
     }
 
     public RecipeDto() {
@@ -108,4 +110,12 @@ public class RecipeDto  {
     public void setIngredientNmbr(String ingredientNmbr) {
         this.ingredientNmbr = ingredientNmbr;
     }
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
 }

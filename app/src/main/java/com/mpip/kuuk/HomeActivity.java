@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -14,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +28,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mpip.kuuk.viewmodel.RecipeDetailsViewModel;
 
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -34,6 +37,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
     NavController navController;
     FirebaseAuth mAuth;
+    RecipeDetailsViewModel recipeDetailsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +51,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navController = Navigation.findNavController(findViewById(R.id.nav_fragment));
         appBarConfiguration = new AppBarConfiguration.Builder(R.id.mainFragment, R.id.ingredientsFragment).
                 setDrawerLayout(drawerLayout).build();
+        recipeDetailsViewModel=new ViewModelProvider(this).get(RecipeDetailsViewModel.class);
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView,navController);
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 if(destination.getId()==R.id.ingredientsFragment){
-                    toolbar.setVisibility(View.VISIBLE);
+
                     toolbar.setTitle("Select Ingredients");
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }
-                else{
-                    toolbar.setVisibility(View.GONE);
+                else if(destination.getId()==R.id.mainFragment){
+                    toolbar.setTitle("Recipes");
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
+                else if(destination.getId()==R.id.detailsFragment){
+                    toolbar.setTitle("Details");
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
-        String userID = getIntent().getStringExtra("userID");
     }
 
     @Override
@@ -86,6 +94,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this,"You've logged out",Toast.LENGTH_LONG).show();
             startActivity(new Intent(this,LoginActivity.class));
         }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+                drawerLayout.openDrawer(GravityCompat.START);
+        }
+
         return true;
     }
 }

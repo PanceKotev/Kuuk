@@ -36,6 +36,7 @@ import com.mpip.kuuk.adapter.RecipeListAdapter;
 import com.mpip.kuuk.dto.IngredientDto;
 import com.mpip.kuuk.dto.RecipeDto;
 import com.mpip.kuuk.viewmodel.IngredientsViewModel;
+import com.mpip.kuuk.viewmodel.RecipeDetailsViewModel;
 import com.mpip.kuuk.viewmodel.RecipeViewModel;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class MainFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private RecipeViewModel recipeViewModel;
     private RecipeListAdapter recipeListAdapter;
+    private RecipeDetailsViewModel recipeDetailsViewModel;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -121,6 +123,7 @@ public class MainFragment extends Fragment {
         recyclerView.setAdapter(recipeListAdapter);
         recipeListAdapter.setItemListener(getItemViewOnClickListener());
         recipeViewModel = new ViewModelProvider(requireActivity()).get(RecipeViewModel.class);
+        recipeDetailsViewModel = new ViewModelProvider(requireActivity()).get(RecipeDetailsViewModel.class);
         if(recipeViewModel.getSearcher()!=null){
             Log.d("Searcher",recipeViewModel.getSearcher());
 
@@ -137,7 +140,11 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 RecipeListAdapter.RecipeViewHolder holder = (RecipeListAdapter.RecipeViewHolder) v.getTag();
-                Toast.makeText(getContext(),recipeListAdapter.getClickedItemName(holder).getName(),Toast.LENGTH_SHORT).show();
+                RecipeDto rec=recipeListAdapter.getClickedItemName(holder);
+                recipeDetailsViewModel.setRecipe(rec);
+                Toast.makeText(getContext(),rec.getName(),Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_detailsFragment);
+
             }
         };
     }

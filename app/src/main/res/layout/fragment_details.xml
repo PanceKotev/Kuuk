@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailsFragment"
+    android:background="@color/colorPrimaryDark">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+
+    <ImageView
+        android:id="@+id/imageBackground"
+        android:layout_width="410dp"
+        android:layout_height="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stepsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="176dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageBackground" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cookTimeLayout"
+        android:layout_width="140dp"
+        android:layout_height="83dp"
+        android:layout_marginStart="258dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="84dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stepsView"
+        app:layout_constraintVertical_bias="0.052">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/details_timeTV"
+            android:layout_width="90dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="37dp"
+            android:layout_marginBottom="45dp"
+            android:paddingLeft="3dp"
+            android:paddingTop="8dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="3dp"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="4"
+            android:text="CookTime"
+            android:textAlignment="center"
+            android:textColor="@color/colorTextHint"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/details_timeIV"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="54dp"
+            android:src="@drawable/wait_time"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/servingsLayout"
+        android:layout_width="128dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="84dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cookTimeLayout"
+        app:layout_constraintStart_toEndOf="@+id/dishLayout"
+        app:layout_constraintTop_toBottomOf="@+id/stepsView"
+        app:layout_constraintVertical_bias="0.057">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/servingsTV"
+            android:layout_width="90dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="37dp"
+            android:layout_marginBottom="45dp"
+            android:paddingLeft="3dp"
+            android:paddingTop="8dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="3dp"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="4"
+            android:text="CookTime"
+            android:textAlignment="center"
+            android:textColor="@color/colorTextHint"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/servingsIV"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="54dp"
+            android:src="@drawable/servings"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dishLayout"
+        android:layout_width="134dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="84dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/servingsLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stepsView"
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dishTV"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="37dp"
+            android:layout_marginBottom="45dp"
+            android:paddingLeft="3dp"
+            android:paddingTop="8dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="3dp"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="4"
+            android:text="CookTime"
+            android:textAlignment="center"
+            android:textColor="@color/colorTextHint"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dishIV"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="54dp"
+            android:src="@drawable/dish_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="39dp"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/recipeNameTV"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginBottom="600dp"
+        android:text="TextView"
+        android:shadowRadius="5"
+        android:shadowColor="@android:color/black"
+        android:textAlignment="center"
+        android:textColor="@color/colorTextHint"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
